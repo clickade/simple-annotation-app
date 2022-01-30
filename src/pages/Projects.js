@@ -128,10 +128,7 @@ const Projects = ({user}) => {
 					parseImage.set('coords',[])	// Use this to store coordinates
 					parseImage.save().then(()=>{
 						// Append image to current list of image once uploaded
-						setImageArray([
-							...imageArray,
-							parseImage
-						])
+						loadImages(curProject)
 					},err=>alert(`Error: ${err.code}\n${err.message}`))
 				},err=>alert(`Error: ${err.code}\n${err.message}`))
 			})
