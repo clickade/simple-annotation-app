@@ -1,70 +1,201 @@
-# Getting Started with Create React App
+# Simple Image Annotation App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple image upload and annotation app. Made with [ReactJS](https://reactjs.org/docs/create-a-new-react-app.html) and [Parse Server](https://parseplatform.org/).
 
-## Available Scripts
+*App built and tested on Firefox, Chrome and Edge (Windows 10).*
 
-In the project directory, you can run:
+# How To Setup This App
 
-### `yarn start`
+## Required installs
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Ensure [MongoDB Server v5.0.5+](https://www.mongodb.com/try/download/community) is installed and running on default port `27017`.
+2. Ensure [NodeJS v16+](https://nodejs.org/en/) is installed.
+3. To install all app dependencies, open a Command window andexecute the following command:
+   ```
+	$ npm install
+	```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Host and run app
 
-### `yarn test`
+1. Start the server by double-clicking the `run-server.bat` file.
+   - Alternatively, open a Command window and execute the following command:
+		```
+		$ cd src/server
+		$ node .
+		```
+2. Start the client hosting service by double-clicking the `run-client.bat` file. A browser window will open and the client page will load, indicating the hosting service is running correctly.
+   - Alternatively, open a Command window and execute the following command:
+		```
+		$ npm start
+		```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## (OPTIONAL) View Database
 
-### `yarn build`
+1. A live view of the database can be accessed via `parse-dashboard`
+2. Ensure the server script is running. (See above: Host and run app)
+3. Open a Command window and execute the following command:
+	```
+	$ npm install -g parse-dashboard
+	```
+4. Once the installation is complete, navigate to the `src/server` folder and double-click on `launch-dashboard.bat`
+   - The dashboard can be accessed on [localhost:4040](http://localhost:4040/)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# How To Use This App
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## User registration
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+First-time visitors to the app will greeted by the registration page.
 
-### `yarn eject`
+![Registration Page](./screencaps/registration-page.JPG)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Enter your desired username (alphanumeric characters only) and password.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Re-enter your password to confirm it.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![Registration Complete](./screencaps/registration-page-complete.JPG)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Click on the `Register Me` button to complete the registration. If successful, you will be brought to your personal projects page.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## User login
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+First-time visitors to the app will greeted by the registration page.
 
-### Code Splitting
+Click on the `Login` button to navigate to the user login page.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+![Login Page](./screencaps/login-page.JPG)
 
-### Analyzing the Bundle Size
+Enter your username and password.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+![Login Complete](./screencaps/login-page-complete.JPG)
 
-### Making a Progressive Web App
+Click on the `Login` button to complete the login. If successful, you will be brought to your personal projects page.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+*If your user credentials are incorrect, simply re-enter the correct credentials.*
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## User logout
 
-### Deployment
+If you are logged in, the `Logout` button can be found on the top navigation panel.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+![Logout Button](./screencaps/logout-button.JPG)
 
-### `yarn build` fails to minify
+Click on the `Logout` button to logout.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![Logout Complete](./screencaps/logout-button-complete.JPG)
+
+---
+
+## User create new project
+
+If you are logged in, the `+ Create New Project` button can be found below the `My Projects` page title.
+
+![Create New Project Button](./screencaps/create-project-button.JPG)
+
+Click on the button and a page prompt will appear. Type in your desired project title and click `OK`.
+
+![Create Project Prompt](./screencaps/create-project.JPG)
+
+A new project will be created and you will be brought to the empty project page.
+
+![Create Project Complete](./screencaps/create-project-complete.JPG)
+
+---
+
+## User select an existing project
+
+If you are logged in, the buttons for your existing project can be found below the `My Projects` page title.
+
+![Project Buttons](./screencaps/nav-project.JPG)
+
+Click on your desired project button and you will be navigated to that project's page.
+
+![Another Project Page](./screencaps/nav-project-complete.JPG)
+
+---
+
+## User upload images
+
+If you are logged in and have created at least one existing project, the `+ Upload New Images` button can be found below the `My Projects` page title.
+
+![Another Project Page](./screencaps/nav-project-complete.JPG)
+
+Click on the button and an upload window will appear. Select the images you want to upload to the project and click `Open`.
+
+![Upload Window](./screencaps/upload-window.JPG)
+
+If successful, new images will be displayed automatically. Otherwise, re-click on the project button to refresh the page.
+
+![Upload Complete](./screencaps/upload-window-complete.JPG)
+
+---
+
+## User annotate images
+
+If you are logged in, have created at least one existing project, and have uploaded at least one image, the images for the currently selected project will be displayed.
+
+![Image Display](./screencaps/upload-window-complete.JPG)
+
+Click on an image you desire to annotate. A full-sized image will pop up.
+
+![Full Image](./screencaps/annotate-image.JPG)
+
+Click and drag across a feature of the image. A dropdown menu will appear. Select the category that best represents the feature.
+
+![Annotation In-Progress](./screencaps/annotate-image-dropdown.JPG)
+
+Once complete, the feature will be labelled on the image.
+
+![Annotation Complete](./screencaps/annotate-image-complete.JPG)
+
+---
+
+## User download image annotation data
+
+Annotated images can be identified by a solid yellow border. Non-annotated images have dashed white borders.
+
+![Annotated vs Non-Annotated Images](./screencaps/download-annotation.JPG)
+
+Select an annotated image and click on the `Download CSV` button at the bottom of the full image to download the annotation coordinates.
+
+![Annotation Complete](./screencaps/annotate-image-complete.JPG)
+
+The downloaded CSV file is structure as follows:
+
+![Annotation CSV](./screencaps/download-annotation-csv.JPG)
+
+You can also download the entire projects' annotation data by clicking on the `Download CSV [ All Images ]` button the project's page.
+
+![Annotation CSV](./screencaps/download-annotation-full.JPG)
+
+# How To Configure This App
+
+## Environment settings
+
+The `.env` file encapsulates the port used for the app. Note that the default address is `localhost:3000`.
+
+## Building the app
+
+If you prefer not using the default create-react-app CD/CI hosting service, you can build the app by executing the command:
+
+```
+$ npm run build
+```
+
+Client-side source files will be compiled and a `build` folder will be created / updated with the current version of the app. Test for the correctness of the app by opening the `build/index.html` file in a new browser window.
+
+# External Libraries Used
+
+The following NodeJS libraries were used to support the functions of the app:
+
+## Client-side
+- [styled-components](https://styled-components.com/)
+- [sheetjs](https://sheetjs.com/)
+- [react-router](https://reactrouter.com/)
+- [parse](https://docs.parseplatform.org/js/guide/)
+
+## Server-side
+- [express](https://expressjs.com/)
+- [parse-server](https://github.com/parse-community/parse-server)
