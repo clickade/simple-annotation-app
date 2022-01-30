@@ -14,6 +14,7 @@ import label from '../globals'
 	const [isComplete,setComplete] = useState(false)	// Check if annotation has been completed
 	const [imgInfo,setImageInfo] = useState({})			// Update image information
 	const [dragCoords,setDragCoords] = useState([[0,0],[0,0]])	// Polygon coordinates
+	const [naturalCoords,setNaturalCoords] = useState([0,0],[0,0])
 
 	/**
 	 * Convert min-max coords into svg-friendly string
@@ -26,11 +27,41 @@ import label from '../globals'
 
 		return `${x1},${y1} ${x1},${y2} ${x2},${y2} ${x2},${y1}`
 	}
+	
+	/**
+	 * Converts client-scaled coords to image coords
+	 * @param {*} coords 
+	 * @returns 
+	 */
+	const client2NaturalCoords = coords => {
+		const ratioX = imgInfo.naturalWidth/imgInfo.clientWidth
+		const ratioY = imgInfo.naturalHeight/imgInfo.clientHeight
+
+		return	[
+			[Math.floor(coords[0][0]*ratioX),Math.floor(coords[0][1]*ratioY)],
+			[Math.floor(coords[1][0]*ratioX),Math.floor(coords[1][1]*ratioY)]
+		]
+	}
+
+	/**
+	 * Converts image coords to client-scaled coords
+	 * @param {*} coords 
+	 * @returns 
+	 */
+	 const natural2ClientCoords = coords => {
+		const ratioX = imgInfo.clientWidth/imgInfo.naturalWidth
+		const ratioY = imgInfo.clientHeight/imgInfo.naturalHeight
+
+		return	[
+			[Math.floor(coords[0][0]*ratioX),Math.floor(coords[0][1]*ratioY)],
+			[Math.floor(coords[1][0]*ratioX),Math.floor(coords[1][1]*ratioY)]
+		]
+	}
 
 	/**
 	 * Convert min-max coords into annotation coords
 	 * @param {*} coords 
-	 * @returns [Top, Left, Bottom, Right]
+	 * @returns [[Top, Left], [Bottom, Right]]
 	 */
 	const buildCoords = coords => {
 		const minX = Math.min(coords[0][0],coords[1][0])
@@ -81,8 +112,10 @@ import label from '../globals'
 		const {x,y} = imgInfo
 		const pixelX = clientX-x
 		const pixelY = clientY-y
+		const pixelXY = [[pixelX,pixelY],[pixelX,pixelY]]
 
-		setDragCoords([[pixelX,pixelY],[pixelX,pixelY]])	// Reset dragCoords
+		setDragCoords(pixelXY)	// Reset dragCoords
+		setNaturalCoords(client2NaturalCoords(pixelXY))	// Reset naturalCoords
 		setMouseDown(true)
 		setComplete(false)
 	}
@@ -100,9 +133,14 @@ import label from '../globals'
 			clientY		// Y-coords of mouse relative to viewport
 		} = evt.nativeEvent
 
+		// Calculate image pixel coordinates of cursor
 		const {x,y} = imgInfo
+		const pixelX = clientX-x
+		const pixelY = clientY-y
+		const pixelXY = [dragCoords[0],[pixelX,pixelY]]
 
-		setDragCoords([dragCoords[0],[clientX-x,clientY-y]])	// Update dragCoords
+		setDragCoords(pixelXY)	// Update dragCoords
+		setNaturalCoords(client2NaturalCoords(pixelXY))	// Reset naturalCoords
 		setMouseDown(false)
 
 		// Ensure this is not a mis-click by setting a minimum draw distance
@@ -142,9 +180,14 @@ import label from '../globals'
 			clientY		// Y-coords of mouse relative to viewport
 		} = evt.nativeEvent
 
+		// Calculate image pixel coordinates of cursor
 		const {x,y} = imgInfo
+		const pixelX = clientX-x
+		const pixelY = clientY-y
+		const pixelXY = [dragCoords[0],[pixelX,pixelY]]
 
-		setDragCoords([dragCoords[0],[clientX-x,clientY-y]])	// Update dragCoords
+		setDragCoords(pixelXY)	// Update dragCoords
+		setNaturalCoords(client2NaturalCoords(pixelXY))	// Reset naturalCoords
 	}
 
 	/**
@@ -154,23 +197,23 @@ import label from '../globals'
 	const handleSelection = evt => {
 		evt.stopPropagation()
 
-		// Reset visuals
-		setComplete(false)
-		setDragCoords([[0,0],[0,0]])
-
 		// Add new coordinates
 		const oldCoords = tempImageData.get('coords')
 		const newCoords = [
 			...oldCoords,
 			{
 				txt: evt.target.value,
-				xy: buildCoords(dragCoords)
+				xy: buildCoords(naturalCoords)
 			}
 		]
 
 		// Update coordinates in database
 		tempImageData.set('coords',newCoords)
 		tempImageData.save()
+
+		// Reset visuals
+		setComplete(false)
+		setDragCoords([[0,0],[0,0]])
 	}
 
 	return <div>
@@ -203,20 +246,24 @@ import label from '../globals'
 			>
 				<polygon points={stringifyCoords(dragCoords)} stroke='#04F404' strokeDasharray='2' fill='none'/>
 				{
-					tempImageData.get('coords').map((data,index)=><svg
-						key={index}
-					>
-						<polygon 
-							points={stringifyCoords(data.xy)}
-							stroke='#04F404'
-							fill='none'
-						/>
-						<text
-							fill='#04F404'
-							x={data.xy[0][0]+5}
-							y={data.xy[0][1]+15}
-						>{data.txt}</text>
-					</svg>)
+					tempImageData.get('coords').map((data,index)=>{
+						const clientXY = natural2ClientCoords(data.xy)
+
+						return <svg
+							key={index}
+						>
+							<polygon 
+								points={stringifyCoords(clientXY)}
+								stroke='#04F404'
+								fill='none'
+							/>
+							<text
+								fill='#04F404'
+								x={clientXY[0][0]+5}
+								y={clientXY[0][1]+15}
+							>{data.txt}</text>
+						</svg>
+					})
 				}
 			</svg>
 		}
