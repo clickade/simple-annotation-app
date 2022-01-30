@@ -29,15 +29,15 @@ A simple image upload and annotation app. Made with [ReactJS](https://reactjs.or
 		$ npm start
 		```
 
-## (OPTIONAL) View Database
+## (OPTIONAL) Database live view
 
 1. A live view of the database can be accessed via `parse-dashboard`
-2. Ensure the server script is running. (See above: Host and run app)
-3. Open a Command window and execute the following command:
+2. To install `parse-dashboard`, open a Command window and execute the following command:
 	```
 	$ npm install -g parse-dashboard
 	```
-4. Once the installation is complete, navigate to the `src/server` folder and double-click on `launch-dashboard.bat`
+3. Before running the dashboard, first ensure the server script is running. (See above: Host and run app)
+4. Navigate to the `src/server` folder and double-click on `launch-dashboard.bat`
    - The dashboard can be accessed on [localhost:4040](http://localhost:4040/)
 
 # How To Use This App
