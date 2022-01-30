@@ -247,7 +247,7 @@ import label from '../globals'
 				<polygon points={stringifyCoords(dragCoords)} stroke='#04F404' strokeDasharray='2' fill='none'/>
 				{
 					tempImageData.get('coords').map((data,index)=>{
-						const clientXY = natural2ClientCoords(data.xy)
+						const clientXY = natural2ClientCoords(data.xy) // Convert saved natural coordinates to client coordinates
 
 						return <svg
 							key={index}
